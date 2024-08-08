@@ -7,7 +7,8 @@
    [ring.middleware.content-type :refer [wrap-content-type]]
    [ring.middleware.webjars :refer [wrap-webjars]]
    [guestbook.env :refer [defaults]]
-   [mount.core :as mount]))
+   [mount.core :as mount]
+   [guestbook.routes.table :refer [table-routes]]))
 
 (mount/defstate init-app
   :start ((or (:init defaults) (fn [])))
@@ -17,7 +18,7 @@
   :start
   (ring/ring-handler
    (ring/router
-    [(home-routes)])
+    [(table-routes)])
    (ring/routes
     (ring/create-resource-handler
      {:path "/"})

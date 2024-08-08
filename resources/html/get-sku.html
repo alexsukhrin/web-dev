@@ -1,0 +1,33 @@
+<tr>
+    <td>{{sku}}</td>
+    <td>{{name}}</td>
+    <td>{{planogram}}</td>
+    <td>{{stock}}</td>
+    <td>{{shelf}}</td>
+    <td class={{color}}>{{replenish}}</td>
+    {% if errors.put %}
+    <td class="is-danger">{{errors.put|join}}</td>
+    {% else %}
+    <td>{{put}}</td>
+    {% endif %}
+    <td>{{empty}}</td>
+    <td>
+        <button class="button is-primary is-outlined" hx-get="/sku/{{sku}}" hx-trigger="edit" onClick="let editing = document.querySelector('.editing')
+                       if(editing) {
+                         Swal.fire({title: 'Already Editing',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Yep, Edit This Row!',
+                                    text:'Hey!  You are already editing a row!  Do you want to cancel that edit and continue?'})
+                         .then((result) => {
+                              if(result.isConfirmed) {
+                                 htmx.trigger(editing, 'cancel')
+                                 htmx.trigger(this, 'edit')
+                              }
+                          })
+                       } else {
+                          htmx.trigger(this, 'edit')
+                       }">
+            редагувати
+        </button>
+    </td>
+</tr>

@@ -50,3 +50,36 @@ li time {
   font-size: 0.75em;
   color: rgba(0, 0, 0, 0.5);
 }
+
+.tr-green {
+  background: green;
+}
+
+.tr-red {
+  background: red;
+}
+
+.tr-yellow {
+  background: yellow;
+}
+
+.content table th:not([align]) {
+  text-align: inherit;
+}
+  
+.table th:not([align]) {
+  text-align: inherit;
+}
+  
+table td:not([align]), table th:not([align]) {
+  text-align: inherit;
+}
+  
+td:not([align]), th:not([align]) {
+  text-align: inherit;
+  }
+
+  .content table th:not([align]) {
+    text-align: inherit;
+    text-align: center;
+}

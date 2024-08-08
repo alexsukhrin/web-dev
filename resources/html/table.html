@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="table-container">
+  <table class="table is-hoverable is-fullwidth">
+
+  <thead>
+    <tr>
+      <th>артикул</th>
+      <th>назва</th>
+      <th>планограма</th>
+      <th>склад</th>
+      <th>полка</th>
+      <th>поповнити</th>
+      <th>поставив</th>
+      <th>діра</th>
+    </tr>
+  </thead>
+
+  <tbody 
+  hx-target="closest tr" 
+  hx-swap="outerHTML"
+  class="content">
+    {% for item in data %}
+    <tr>
+      <td>{{item.sku}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.planogram}}</td>
+      <td>{{item.stock}}</td>
+      <td>{{item.shelf}}</td>
+      <td class="{{item.color}}">{{item.replenish}}</td>
+      <td>{{item.put}}</td>
+      <td>{{item.empty}}</td>
+      <td>
+        <button 
+        class="button is-primary is-outlined"
+        hx-get="/sku/{{item.sku}}" 
+        hx-trigger="edit" 
+        onClick="let editing = document.querySelector('.editing')
+                                   if(editing) {
+                                     Swal.fire({title: 'Already Editing',
+                                                showCancelButton: true,
+                                                confirmButtonText: 'Yep, Edit This Row!',
+                                                text:'Hey!  You are already editing a row!  Do you want to cancel that edit and continue?'})
+                                     .then((result) => {
+                                          if(result.isConfirmed) {
+                                             htmx.trigger(editing, 'cancel')
+                                             htmx.trigger(this, 'edit')
+                                          }
+                                      })
+                                   } else {
+                                      htmx.trigger(this, 'edit')
+                                   }">
+          редагувати
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% endblock %}
