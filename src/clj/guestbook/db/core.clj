@@ -13,18 +13,18 @@
 
 (conman/bind-connection *db* "sql/queries.sql")
 
-(defn sql-timestamp->inst 
-  [t] 
-  (-> t 
-      (.toLocalDateTime) 
+(defn sql-timestamp->inst
+  [t]
+  (-> t
+      (.toLocalDateTime)
       (.atZone (java.time.ZoneId/systemDefault)) (java-date)))
 
 (extend-protocol next.jdbc.result-set/ReadableColumn
   java.sql.Timestamp
   (read-column-by-label [^java.sql.Timestamp v _]
-                        (sql-timestamp->inst v))
+    (sql-timestamp->inst v))
   (read-column-by-index [^java.sql.Timestamp v _2 _3]
-                        (sql-timestamp->inst v))
+    (sql-timestamp->inst v))
   java.sql.Date
   (read-column-by-label [^java.sql.Date v _]
     (.toLocalDate v))
