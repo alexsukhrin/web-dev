@@ -1,6 +1,6 @@
 (defproject guestbook "0.1.0-SNAPSHOT"
 
-  :description "FIXME: write description"
+  :description "Questbook for example"
   :url "http://example.com/FIXME"
 
   :dependencies [[ch.qos.logback/logback-classic "1.2.3"]
@@ -30,17 +30,38 @@
                  [ring-webjars "0.2.0"]
                  [ring/ring-core "1.8.2"]
                  [ring/ring-defaults "0.3.2"]
-                 [selmer "1.12.31"]]
+                 [selmer "1.12.31"]
+                 [org.clojure/clojurescript "1.10.764" :scope "provided"]
+                 [reagent "1.0.0"]
+                 [cljs-ajax "0.8.1"]
+                 [re-frame "1.1.2"]]
 
   :min-lein-version "2.0.0"
 
-  :source-paths ["src/clj"]
+  :source-paths ["src/clj" "src/cljc"]
   :test-paths ["test/clj"]
-  :resource-paths ["resources"]
+  :resource-paths ["resources" "target/cljsbuild"]
   :target-path "target/%s/"
   :main ^:skip-aot guestbook.core
 
-  :plugins []
+  :plugins [[lein-cljsbuild "1.1.8"]]
+
+  :cljsbuild
+  {:builds
+   {:app {:source-paths ["src/cljs" "src/cljc"]
+          :compiler {:output-to "target/cljsbuild/public/js/app.js"
+                     :output-dir "target/cljsbuild/public/js/out"
+                     :main "guestbook.core"
+                     :asset-path "/js/out"
+                     :optimizations :none
+                     :source-map true
+                     :pretty-print true}}}}
+
+  :clean-targets
+  ^{:project false}
+  [:target-path
+   [:cljsbuild :builds :app :compiler :output-dir]
+   [:cljsbuild :builds :app :compiler :output-to]]
 
   :profiles
   {:uberjar {:omit-source true
